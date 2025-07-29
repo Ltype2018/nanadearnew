@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浪漫爱心</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .container {
+            position: absolute;
+            top: 16%;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .container span {
+            display: inline-block;
+            color: #ff69b4;
+            font-size: 50px;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff1493;
+            animation: float 3s ease-in-out infinite;
+            margin: 0 5px;
+        }
+        
+        .container span:nth-child(1) { animation-delay: 0.1s; }
+        .container span:nth-child(2) { animation-delay: 0.2s; }
+        .container span:nth-child(3) { animation-delay: 0.3s; }
+        .container span:nth-child(4) { animation-delay: 0.4s; }
+        .container span:nth-child(5) { animation-delay: 0.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .heart-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+        
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span>亲</span>
+        <span>爱</span>
+        <span>的</span>
+        <span>娜</span>
+        <span>娜</span>
+    </div>
+    
+    <div class="heart-container">
+        <img src="https://pic.imgdb.cn/item/642547f5a682492fcc15cd5d.gif" width="500" height="325">
+    </div>
+    
+    <canvas id="particles"></canvas>
+    
+    <audio autoplay loop>
+        <source src="http://ws.stream.qqmusic.qq.com/C4000009nowb1Lxsk5.m4a" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        // 粒子背景效果
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const particles = [];
+        const particleCount = 150;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 3 + 1,
+                speedX: Math.random() * 2 - 1,
+                speedY: Math.random() * 2 - 1,
+                color: `hsl(${Math.random() * 60 + 330}, 100%, 50%)`
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                
+                p.x += p.speedX;
+                p.y += p.speedY;
+                
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
